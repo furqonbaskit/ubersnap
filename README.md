@@ -192,27 +192,3 @@ docker-compose down
 # Remove volumes (optional)
 docker-compose down -v
 ```
-
-## Troubleshooting
-
-### Port Already in Use
-
-```bash
-# Kill process on port 8085
-lsof -ti:8085 | xargs kill -9
-```
-
-### Database Connection Issues
-
-```bash
-# Verify PostgreSQL is running
-docker-compose logs db
-
-# Check environment variables in .env
-```
-
-### Rebuild Application
-
-```bash
-docker-compose up --build --force-recreate
-```
