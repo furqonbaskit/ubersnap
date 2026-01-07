@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  app:
+    container_name: ubersnap-app
+    build: .
+    ports:
+      - "8085:8085"
+    environment:
+      - SERVER_PORT=8085
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=password
+      - DB_NAME=ubersnap
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - ubersnap-network
+
+  db:
+    container_name: ubersnap-db
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=ubersnap
+      - POSTGRES_INITDB_ARGS=-c max_connections=200
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+    networks:
+      - ubersnap-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
+
+networks:
+  ubersnap-network:
+    driver: bridge
