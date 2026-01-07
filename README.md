@@ -68,20 +68,6 @@ cp .env.example .env
 go run ./cmd/main.go
 ```
 
-### Environment Variables
-
-Create a `.env` file:
-
-```
-SERVER_PORT=8085
-DB_HOST=db
-DB_PORT=5432
-DB_USER=postgres
-DB_PASSWORD=password
-DB_NAME=ubersnap
-DB_SSLMODE=disable
-```
-
 ## How to Test
 
 ```bash
